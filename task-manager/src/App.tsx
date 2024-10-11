@@ -7,6 +7,7 @@ const App: React.FC = () => {
     return (
         <div className="container">
             <h1>Task Management App</h1>
+            <p> Time to get work done</p>
             <TaskList />
         </div>
     );
