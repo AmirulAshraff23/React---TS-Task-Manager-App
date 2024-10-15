@@ -1,4 +1,32 @@
-/* Make the whole container look more centered and modern */
+/* App.css */
+
+/* General Styles */
+.container {
+    display: flex;                     
+    flex-direction: column;           
+    align-items: center;              
+    padding: 20px;                    
+    background-color: #f8f9fa;       
+    border-radius: 10px;              
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    margin: 20px auto;                
+    max-width: 600px;                 
+}
+
+h1 {
+    font-size: 2.5rem;                
+    color: #343a40;                   
+    margin-bottom: 10px;              
+}
+
+p {
+    font-size: 1.2rem;                
+    color: #6c757d;                   
+    text-align: center;               
+    margin-bottom: 20px;              
+}
+
+/* Task List Container */
 .task-list-container {
     max-width: 600px;
     margin: 0 auto;
@@ -8,41 +36,85 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Style each task as a card widget */
+/* Task Styles */
 .task {
-    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;  
     padding: 20px;
     margin-bottom: 15px;
     border-radius: 8px;
+    background-color: #fff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
 }
 
-/* Add hover effect to tasks for a modern look */
+/* Task hover effect */
 .task:hover {
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Style task titles */
+/* Completed Task Styles */
+.task.completed-task {
+    border: 2px solid green;  
+    background-color: #eaffea; 
+}
+
+/* Task Text */
 .task h4 {
     font-size: 18px;
     margin-bottom: 10px;
     color: #333;
 }
 
-/* Style task descriptions */
 .task p {
     font-size: 14px;
     color: #666;
 }
 
-/* Style the Add Task and Clear All buttons */
+/* Complete Text */
+.complete-text {
+    color: green;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+/* Button Styles */
 .btn {
     padding: 10px 20px;
     font-size: 16px;
 }
 
-/* Style the warning message */
+.btn-danger {
+    background-color: red;
+    color: white;
+}
+
+/* Checkbox Styles */
+.task-checkbox {
+    width: 24px; 
+    height: 24px;
+    transform: scale(1.5); 
+    accent-color: green; 
+    cursor: pointer;
+}
+
+/* Delete Button Styles */
+.task-delete {
+    width: 30px; 
+    height: 30px;
+    border-radius: 50%; 
+    background-color: red; 
+    color: white;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+}
+
+/* Alert Styles */
 .alert-warning {
     background-color: #ffedc2;
     padding: 20px;
@@ -50,7 +122,14 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Style the warning buttons */
 .alert-warning button {
     margin-right: 10px;
 }
+
+/* Miscellaneous Styles */
+.task-text {
+    text-align: left; 
+}
+
+/* Old magic stay here */
+/* Add new magic after this */

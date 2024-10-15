@@ -1,66 +1,70 @@
 import React, { useState } from 'react';
-import Task from './Task'; // Make sure this path is correct
-import '../styles/App.css'
+import Task from './Task';
+import '../styles/App.css'; 
 
 interface TaskItem {
-    id: number; // number for each job
-    title: string; // job name
-    description: string; // what job say
+    id: number;
+    title: string;
+    description: string;
+    isCompleted: boolean;
 }
 
 const TaskList: React.FC = () => {
-    const [tasks, setTasks] = useState<TaskItem[]>([]);  // List of jobs
-    const [newTaskTitle, setNewTaskTitle] = useState(''); // New task name
-    const [newTaskDescription, setNewTaskDescription] = useState(''); // New task description
-    const [showWarning, setShowWarning] = useState(false); // Control showing the warning
+    const [tasks, setTasks] = useState<TaskItem[]>([]);
+    const [newTaskTitle, setNewTaskTitle] = useState('');
+    const [newTaskDescription, setNewTaskDescription] = useState('');
+    const [showWarning, setShowWarning] = useState(false); // Show warning for clear all
 
-    // Function to add a new task
     const addTask = () => {
-        if (newTaskDescription.trim() === '' || newTaskTitle.trim() === '') return; // Check for empty input
+        if (newTaskDescription.trim() === '' || newTaskTitle.trim() === '') return;
         const newTask: TaskItem = {
-            id: tasks.length + 1, // Next number for job
-            title: newTaskTitle, // Use user input for job name
-            description: newTaskDescription, // Use user input
+            id: tasks.length + 1,
+            title: newTaskTitle,
+            description: newTaskDescription,
+            isCompleted: false
         };
-        setTasks([...tasks, newTask]); // Add new job to list
-        setNewTaskTitle(''); // Clear job input after adding
-        setNewTaskDescription(''); // Clear input after adding
+        setTasks([...tasks, newTask]);
+        setNewTaskTitle('');
+        setNewTaskDescription('');
     };
 
-    // Function to clear all tasks
+    const toggleCompleteTask = (id: number) => {
+        setTasks(tasks.map(task =>
+            task.id === id ? { ...task, isCompleted: !task.isCompleted } : task
+        ));
+    };
+
+    const deleteTask = (id: number) => {
+        setTasks(tasks.filter(task => task.id !== id));
+    };
+
     const clearAllTasks = () => {
         setTasks([]); // Clear all tasks
-        setShowWarning(false); // Hide the warning after clearing
+        setShowWarning(false); // Hide warning after clear
     };
 
     return (
         <div>
-            {/* Input for job name */}
             <input
                 type="text"
-                value={newTaskTitle} // Use state for job name input
-                onChange={(e) => setNewTaskTitle(e.target.value)} // Update job name state
-                placeholder="Enter task title" // Tell user what to do
-                className="form-control mb-3" // Bootstrap styling
+                value={newTaskTitle}
+                onChange={(e) => setNewTaskTitle(e.target.value)}
+                placeholder="Enter task title"
+                className="form-control mb-3"
             />
-
-            {/* Input for job description */}
             <input
                 type="text"
-                value={newTaskDescription} // Use state for description input
-                onChange={(e) => setNewTaskDescription(e.target.value)} // Update description state
-                placeholder="Enter task description" // Tell user what to do
-                className="form-control mb-3" // Bootstrap styling
+                value={newTaskDescription}
+                onChange={(e) => setNewTaskDescription(e.target.value)}
+                placeholder="Enter task description"
+                className="form-control mb-3"
             />
-            
-            {/* Button to add a new task */}
-            <button className="btn btn-primary mb-3" onClick={addTask}>Add Task</button> {/* Button make new job */}
+            <button className="btn btn-primary mb-3" onClick={addTask}>Add Task</button>
 
-            {/* Button to trigger the warning for clearing all tasks */}
+            {/* Clear all tasks button */}
             <button className="btn btn-danger mb-3" onClick={() => setShowWarning(true)}>Clear All Tasks</button>
 
-            {/* Show the warning when the user clicks 'Clear All Tasks' */}
-            {showWarning && (
+            {showWarning && ( // Show warning when clear all button is clicked
                 <div className="alert alert-warning">
                     <p>This will delete all current tasks! Are you sure?</p>
                     <button className="btn btn-danger" onClick={clearAllTasks}>Yes</button>
@@ -68,9 +72,16 @@ const TaskList: React.FC = () => {
                 </div>
             )}
 
-            {/* Show tasks here */}
             {tasks.map((task: TaskItem) => (
-                <Task key={task.id} id={task.id} title={task.title} description={task.description} /> 
+                <Task
+                    key={task.id}
+                    id={task.id}
+                    title={task.title}
+                    description={task.description}
+                    isCompleted={task.isCompleted}
+                    onComplete={() => toggleCompleteTask(task.id)}
+                    onDelete={() => deleteTask(task.id)}
+                />
             ))}
         </div>
     );
