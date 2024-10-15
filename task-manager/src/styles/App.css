@@ -1,0 +1,56 @@
+/* Make the whole container look more centered and modern */
+.task-list-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Style each task as a card widget */
+.task {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+/* Add hover effect to tasks for a modern look */
+.task:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Style task titles */
+.task h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Style task descriptions */
+.task p {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Style the Add Task and Clear All buttons */
+.btn {
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+/* Style the warning message */
+.alert-warning {
+    background-color: #ffedc2;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Style the warning buttons */
+.alert-warning button {
+    margin-right: 10px;
+}

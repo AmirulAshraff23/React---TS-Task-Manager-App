@@ -1,5 +1,7 @@
 // Task make box for one job
 import React from 'react';
+import '../styles/App.css'
+
 
 interface TaskProps {
     id: number; // number for job

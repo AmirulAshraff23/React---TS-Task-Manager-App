@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Task from './Task'; // Make sure this path is correct
+import '../styles/App.css'
 
 interface TaskItem {
     id: number; // number for each job
