@@ -29,11 +29,15 @@ const Task: React.FC<TaskProps> = ({
                 <p>{description}</p>
             </div>
 
+            
+
             <input
                 type="checkbox"
+                className="task-checkbox" 
                 checked={isCompleted}
                 onChange={onComplete}
             />
+            {isCompleted && <p className="complete-text">Complete</p>}
 
             <button className="task-delete" onClick={onDelete}>X</button>
 
