@@ -36,19 +36,31 @@ const TaskList: React.FC = () => {
         setNewTaskDescription('');
     };
 
-    const handleAddSubtask = (taskId: number) => {
-        const subtaskTitle = prompt("Enter subtask name:");
-        if (subtaskTitle) {
-            const newSubtask: Subtask = { id: Date.now(), title: subtaskTitle, isCompleted: false };
-            setTasks(prevTasks =>
-                prevTasks.map(task =>
-                    task.id === taskId
-                        ? { ...task, subtasks: [...task.subtasks, newSubtask] }
-                        : task
-                )
-            );
-        }
+    // const handleAddSubtask = (taskId: number) => {
+    //     const subtaskTitle = prompt("Enter subtask name:");
+    //     if (subtaskTitle) {
+    //         const newSubtask: Subtask = { id: Date.now(), title: subtaskTitle, isCompleted: false };
+    //         setTasks(prevTasks =>
+    //             prevTasks.map(task =>
+    //                 task.id === taskId
+    //                     ? { ...task, subtasks: [...task.subtasks, newSubtask] }
+    //                     : task
+    //             )
+    //         );
+    //     }
+    // };
+
+    const handleAddSubtask = (taskId: number, subtaskTitle: string) => {
+        const newSubtask: Subtask = { id: Date.now(), title: subtaskTitle, isCompleted: false };
+        setTasks(prevTasks =>
+            prevTasks.map(task =>
+                task.id === taskId
+                    ? { ...task, subtasks: [...task.subtasks, newSubtask] }
+                    : task
+            )
+        );
     };
+    
 
     const toggleCompleteTask = (id: number) => {
         setTasks(prevTasks =>
@@ -107,7 +119,8 @@ const TaskList: React.FC = () => {
                         subtasks={task.subtasks}
                         onComplete={() => toggleCompleteTask(task.id)}
                         onDelete={() => deleteTask(task.id)}
-                        onAddSubtask={() => handleAddSubtask(task.id)}
+                        //onAddSubtask={() => handleAddSubtask(task.id)}
+                        onAddSubtask={(subtaskTitle) => handleAddSubtask(task.id, subtaskTitle)}
                     />
                 ))}
             </div>

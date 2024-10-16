@@ -4,17 +4,18 @@
 .container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 40px; /* Increased padding */
+    /*align-items: center;*/
+    padding: 60px; /* Increased padding */
     background-color: #f8f9fa;
     border-radius: 15px; /* Larger border radius */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Slightly larger shadow */
     margin: 40px auto; /* Increased margin */
-    max-width: 900px; /* Wider container */
+    max-width: 1200px; /* Wider container */
 }
 
 h1 {
     font-size: 3rem; /* Increased font size */
+    text-align: center;
     color: #343a40;
     margin-bottom: 20px; /* More spacing below */
 }
@@ -38,7 +39,9 @@ p {
 
 /* Task Styles */
 .task {
-    display: flex;
+    display: block; /* Display block to push children down */
+    margin-bottom: 30px; /* More space between tasks */
+    /*display: flex;*/
     justify-content: space-between;
     align-items: flex-start;
     padding: 30px; /* Increased padding */
@@ -112,6 +115,24 @@ p {
     align-items: center;
     cursor: pointer;
     border: none;
+}
+.task-add-subtask {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: blue;
+    color: white;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+}
+
+.subtasks {
+    padding-left: 20px; /* Indent subtasks */
+    margin-top: 10px;    /* Space between parent and subtask */
 }
 
 /* Alert Styles */
