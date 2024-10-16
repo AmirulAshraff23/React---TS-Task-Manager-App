@@ -39,18 +39,28 @@ p {
 
 /* Task Styles */
 .task {
-    display: block; /* Display block to push children down */
-    margin-bottom: 30px; /* More space between tasks */
-    /*display: flex;*/
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 30px; /* Increased padding */
-    margin-bottom: 20px; /* More space between tasks */
-    border-radius: 10px;
-    background-color: #fff;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1); /* Slightly larger shadow */
-    transition: box-shadow 0.3s ease;
+    display: block;       /* Parent task displayed block */
+    margin-bottom: 40px;  /* Space between tasks */
+    padding: 20px;
+    background-color: #f5f5f5; /* Light background for parent */
+    border-radius: 8px;   /* Make parent task round */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow to make it stand out */
 }
+
+.subtasks {
+    display: flex;        /* Subtasks will have their own display */
+    flex-direction: column;
+    gap: 10px;            /* Space between each subtask */
+    margin-top: 20px;     /* Space between parent and subtasks */
+}
+
+.subtask {
+    padding: 15px;
+    background-color: #e0e0e0;  /* Subtask gets separate color */
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Smaller shadow for subtasks */
+}
+
 
 /* Task hover effect */
 .task:hover {

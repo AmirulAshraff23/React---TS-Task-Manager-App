@@ -86,6 +86,7 @@ const Task: React.FC<TaskProps> = ({
                             <span>{subtask.title}</span>
                             <input
                                 type="checkbox"
+                                className="task-checkbox"
                                 checked={subtask.isCompleted}
                                 onChange={() => {/* Handle subtask completion */ }}
                             />
