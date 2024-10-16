@@ -1,46 +1,70 @@
 import React, { useState } from 'react';
 import Task from './Task';
-import '../styles/App.css'; 
+import '../styles/App.css';
+
+export interface Subtask {
+    id: number;
+    title: string;
+    isCompleted: boolean;
+}
 
 interface TaskItem {
     id: number;
     title: string;
     description: string;
     isCompleted: boolean;
+    subtasks: Subtask[];
 }
 
 const TaskList: React.FC = () => {
     const [tasks, setTasks] = useState<TaskItem[]>([]);
     const [newTaskTitle, setNewTaskTitle] = useState('');
     const [newTaskDescription, setNewTaskDescription] = useState('');
-    const [showWarning, setShowWarning] = useState(false); // Show warning for clear all
+    const [showWarning, setShowWarning] = useState(false);
+    const [parentTaskId, setParentTaskId] = useState<number | null>(null);
 
-    const addTask = () => {
-        if (newTaskDescription.trim() === '' || newTaskTitle.trim() === '') return;
+    const handleAddTask = () => {
         const newTask: TaskItem = {
-            id: tasks.length + 1,
-            title: newTaskTitle,
-            description: newTaskDescription,
-            isCompleted: false
+            id: Date.now(),
+            title: newTaskTitle || 'Untitled Task', // Fallback for task title
+            description: newTaskDescription || 'No description',
+            isCompleted: false,
+            subtasks: [],
         };
-        setTasks([...tasks, newTask]);
+        setTasks(prevTasks => [...prevTasks, newTask]);
         setNewTaskTitle('');
         setNewTaskDescription('');
     };
 
+    const handleAddSubtask = (taskId: number) => {
+        const subtaskTitle = prompt("Enter subtask name:");
+        if (subtaskTitle) {
+            const newSubtask: Subtask = { id: Date.now(), title: subtaskTitle, isCompleted: false };
+            setTasks(prevTasks =>
+                prevTasks.map(task =>
+                    task.id === taskId
+                        ? { ...task, subtasks: [...task.subtasks, newSubtask] }
+                        : task
+                )
+            );
+        }
+    };
+
     const toggleCompleteTask = (id: number) => {
-        setTasks(tasks.map(task =>
-            task.id === id ? { ...task, isCompleted: !task.isCompleted } : task
-        ));
+        setTasks(prevTasks =>
+            prevTasks.map(task =>
+                task.id === id ? { ...task, isCompleted: !task.isCompleted } : task
+            )
+        );
     };
 
     const deleteTask = (id: number) => {
-        setTasks(tasks.filter(task => task.id !== id));
+        setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
     };
 
     const clearAllTasks = () => {
-        setTasks([]); // Clear all tasks
-        setShowWarning(false); // Hide warning after clear
+        setTasks([]);
+        setShowWarning(false);
     };
 
     return (
@@ -59,30 +83,34 @@ const TaskList: React.FC = () => {
                 placeholder="Enter task description"
                 className="form-control mb-3"
             />
-            <button className="btn btn-primary mb-3" onClick={addTask}>Add Task</button>
 
-            {/* Clear all tasks button */}
+            <button className="btn btn-primary mb-3" onClick={handleAddTask}>Add Task</button>
+
             <button className="btn btn-danger mb-3" onClick={() => setShowWarning(true)}>Clear All Tasks</button>
 
-            {showWarning && ( // Show warning when clear all button is clicked
+            {showWarning && (
                 <div className="alert alert-warning">
-                    <p>This will delete all current tasks! Are you sure?</p>
+                    <p>This will delete all tasks! Are you sure?</p>
                     <button className="btn btn-danger" onClick={clearAllTasks}>Yes</button>
                     <button className="btn btn-secondary" onClick={() => setShowWarning(false)}>No</button>
                 </div>
             )}
 
-            {tasks.map((task: TaskItem) => (
-                <Task
-                    key={task.id}
-                    id={task.id}
-                    title={task.title}
-                    description={task.description}
-                    isCompleted={task.isCompleted}
-                    onComplete={() => toggleCompleteTask(task.id)}
-                    onDelete={() => deleteTask(task.id)}
-                />
-            ))}
+            <div className="task-list">
+                {tasks.map(task => (
+                    <Task
+                        key={task.id}
+                        id={task.id}
+                        title={task.title}
+                        description={task.description}
+                        isCompleted={task.isCompleted}
+                        subtasks={task.subtasks}
+                        onComplete={() => toggleCompleteTask(task.id)}
+                        onDelete={() => deleteTask(task.id)}
+                        onAddSubtask={() => handleAddSubtask(task.id)}
+                    />
+                ))}
+            </div>
         </div>
     );
 };
