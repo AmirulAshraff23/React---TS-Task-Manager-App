@@ -105,8 +105,8 @@ p {
 
 /* Checkbox Styles */
 .task-checkbox {
-    width: 36px;  /* Increased size */
-    height: 36px; /* Increased size */
+    width: 30px;  /* Increased size */
+    height: 30px; /* Increased size */
     transform: scale(1.5); /* Larger checkbox */
     accent-color: green;
     cursor: pointer;
