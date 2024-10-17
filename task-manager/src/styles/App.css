@@ -105,11 +105,16 @@ p {
 
 /* Checkbox Styles */
 .task-checkbox {
-    width: 30px;  /* Increased size */
-    height: 30px; /* Increased size */
+    width: 20px;  /* Increased size */
+    height: 20px; /* Increased size */
     transform: scale(1.5); /* Larger checkbox */
     accent-color: green;
     cursor: pointer;
+}
+
+.done-text {
+    color: green;
+    font-weight: bold;
 }
 
 /* Delete Button Styles */

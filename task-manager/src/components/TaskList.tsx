@@ -8,7 +8,7 @@ export interface Subtask {
     isCompleted: boolean;
 }
 
-interface TaskItem {
+export interface TaskItem {
     id: number;
     title: string;
     description: string;
@@ -16,67 +16,92 @@ interface TaskItem {
     subtasks: Subtask[];
 }
 
-const TaskList: React.FC = () => {
-    const [tasks, setTasks] = useState<TaskItem[]>([]);
+const TaskList: React.FC<{ tasks: TaskItem[]; setTasks: React.Dispatch<React.SetStateAction<TaskItem[]>> }> = ({ tasks, setTasks }) => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const tasksPerPage = 10;
+
+    const totalPages = Math.ceil(tasks.length / tasksPerPage);
+    const startIndex = (currentPage - 1) * tasksPerPage;
+    const currentTasks = tasks.slice(startIndex, startIndex + tasksPerPage);
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage((prev) => prev + 1);
+        }
+    };
+
+    const handlePreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage((prev) => prev - 1);
+        }
+    };
+
     const [newTaskTitle, setNewTaskTitle] = useState('');
     const [newTaskDescription, setNewTaskDescription] = useState('');
     const [showWarning, setShowWarning] = useState(false);
-    const [parentTaskId, setParentTaskId] = useState<number | null>(null);
 
     const handleAddTask = () => {
         const newTask: TaskItem = {
             id: Date.now(),
-            title: newTaskTitle || 'Untitled Task', // Fallback for task title
+            title: newTaskTitle || 'Untitled Task',
             description: newTaskDescription || 'No description',
             isCompleted: false,
             subtasks: [],
         };
-        setTasks(prevTasks => [...prevTasks, newTask]);
+
+        setTasks((prevTasks) => [...prevTasks, newTask]); // Add new task to state
         setNewTaskTitle('');
         setNewTaskDescription('');
     };
 
-    // const handleAddSubtask = (taskId: number) => {
-    //     const subtaskTitle = prompt("Enter subtask name:");
-    //     if (subtaskTitle) {
-    //         const newSubtask: Subtask = { id: Date.now(), title: subtaskTitle, isCompleted: false };
-    //         setTasks(prevTasks =>
-    //             prevTasks.map(task =>
-    //                 task.id === taskId
-    //                     ? { ...task, subtasks: [...task.subtasks, newSubtask] }
-    //                     : task
-    //             )
-    //         );
-    //     }
-    // };
-
-    const handleAddSubtask = (taskId: number, subtaskTitle: string) => {
-        const newSubtask: Subtask = { id: Date.now(), title: subtaskTitle, isCompleted: false };
-        setTasks(prevTasks =>
-            prevTasks.map(task =>
-                task.id === taskId
-                    ? { ...task, subtasks: [...task.subtasks, newSubtask] }
-                    : task
+    const handleEditTask = (taskId: number, newTitle: string, newDescription: string) => {
+        setTasks((prevTasks) =>
+            prevTasks.map((task) =>
+                task.id === taskId ? { ...task, title: newTitle, description: newDescription } : task
             )
         );
     };
-    
+
+    const handleAddSubtask = (taskId: number, subtaskTitle: string) => {
+        const newSubtask: Subtask = { id: Date.now(), title: subtaskTitle, isCompleted: false };
+
+        setTasks((prevTasks) =>
+            prevTasks.map((task) =>
+                task.id === taskId ? { ...task, subtasks: [...task.subtasks, newSubtask] } : task
+            )
+        );
+    };
 
     const toggleCompleteTask = (id: number) => {
-        setTasks(prevTasks =>
-            prevTasks.map(task =>
+        setTasks((prevTasks) =>
+            prevTasks.map((task) =>
                 task.id === id ? { ...task, isCompleted: !task.isCompleted } : task
             )
         );
     };
 
     const deleteTask = (id: number) => {
-        setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
+        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
     };
 
     const clearAllTasks = () => {
-        setTasks([]);
+        setTasks([]); // Clear all tasks by setting tasks to empty array
         setShowWarning(false);
+    };
+
+    const handleToggleSubtask = (taskId: number, subtaskId: number) => {
+        setTasks((prevTasks) =>
+            prevTasks.map((task) =>
+                task.id === taskId
+                    ? {
+                          ...task,
+                          subtasks: task.subtasks.map((subtask) =>
+                              subtask.id === subtaskId ? { ...subtask, isCompleted: !subtask.isCompleted } : subtask
+                          ),
+                      }
+                    : task
+            )
+        );
     };
 
     return (
@@ -95,21 +120,27 @@ const TaskList: React.FC = () => {
                 placeholder="Enter task description"
                 className="form-control mb-3"
             />
-
-            <button className="btn btn-primary mb-3" onClick={handleAddTask}>Add Task</button>
-
-            <button className="btn btn-danger mb-3" onClick={() => setShowWarning(true)}>Clear All Tasks</button>
+            <button className="btn btn-primary mb-3" onClick={handleAddTask}>
+                Add Task
+            </button>
+            <button className="btn btn-danger mb-3" onClick={() => setShowWarning(true)}>
+                Clear All Tasks
+            </button>
 
             {showWarning && (
                 <div className="alert alert-warning">
                     <p>This will delete all tasks! Are you sure?</p>
-                    <button className="btn btn-danger" onClick={clearAllTasks}>Yes</button>
-                    <button className="btn btn-secondary" onClick={() => setShowWarning(false)}>No</button>
+                    <button className="btn btn-danger" onClick={clearAllTasks}>
+                        Yes
+                    </button>
+                    <button className="btn btn-secondary" onClick={() => setShowWarning(false)}>
+                        No
+                    </button>
                 </div>
             )}
 
             <div className="task-list">
-                {tasks.map(task => (
+                {currentTasks.map((task) => (
                     <Task
                         key={task.id}
                         id={task.id}
@@ -119,10 +150,20 @@ const TaskList: React.FC = () => {
                         subtasks={task.subtasks}
                         onComplete={() => toggleCompleteTask(task.id)}
                         onDelete={() => deleteTask(task.id)}
-                        //onAddSubtask={() => handleAddSubtask(task.id)}
                         onAddSubtask={(subtaskTitle) => handleAddSubtask(task.id, subtaskTitle)}
+                        onToggleSubtask={(subtaskId) => handleToggleSubtask(task.id, subtaskId)}
+                        onEditTask={(newTitle, newDescription) => handleEditTask(task.id, newTitle, newDescription)}
                     />
                 ))}
+                <div className="pagination">
+                    <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+                        Previous
+                    </button>
+                    <span>Page {currentPage} of {totalPages}</span>
+                    <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+                        Next
+                    </button>
+                </div>
             </div>
         </div>
     );

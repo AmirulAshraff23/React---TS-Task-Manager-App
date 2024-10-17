@@ -11,6 +11,8 @@ interface TaskProps {
     onComplete: () => void;
     onDelete: () => void;
     onAddSubtask: (subtaskTitle: string) => void;
+    onToggleSubtask: (subtaskId: number) => void;
+    onEditTask: (newTitle: string, newDescription: string) => void; // Add this for editing
 }
 
 const Task: React.FC<TaskProps> = ({
@@ -22,45 +24,66 @@ const Task: React.FC<TaskProps> = ({
     onComplete,
     onDelete,
     onAddSubtask,
+    onToggleSubtask,
+    onEditTask,
 }) => {
-
     const [subtaskInputVisible, setSubtaskInputVisible] = useState(false);
     const [newSubtaskTitle, setNewSubtaskTitle] = useState('');
-
-    const handleAddSubtaskInput = () => {
-        setSubtaskInputVisible(true); // Show input field when adding subtask
-    };
+    const [isEditing, setIsEditing] = useState(false); // Track if we are editing
+    const [editedTitle, setEditedTitle] = useState(title); // Hold edited title
+    const [editedDescription, setEditedDescription] = useState(description); // Hold edited description
 
     const handleAddSubtask = () => {
-        if (newSubtaskTitle.trim()) { // Check if the title is not empty
-            onAddSubtask(newSubtaskTitle); // Send the title to parent when input done
-            setNewSubtaskTitle(''); // Clear input
-            setSubtaskInputVisible(false); // Hide input field after done
+        if (newSubtaskTitle.trim()) {
+            onAddSubtask(newSubtaskTitle);
+            setNewSubtaskTitle('');
+            setSubtaskInputVisible(false);
         }
     };
 
+    const handleEdit = () => {
+        setIsEditing(true); // Start editing mode
+    };
+
+    const handleSaveEdit = () => {
+        onEditTask(editedTitle, editedDescription); // Save edited task
+        setIsEditing(false); // Exit editing mode
+    };
 
     return (
         <div className={`task ${isCompleted ? 'completed-task' : ''}`}>
-            <div className="task-text">
-                <h4>{title}</h4>
-                <p>{description}</p>
-            </div>
-
-
-
-            <input
-                type="checkbox"
-                className="task-checkbox"
-                checked={isCompleted}
-                onChange={onComplete}
-            />
-            {isCompleted && <p className="complete-text">Complete</p>}
-
-            <button className="task-delete" onClick={onDelete}>X</button>
-
-            {/* <button className="task-add-subtask" onClick={onAddSubtask}>+</button> */}
-
+            {isEditing ? (
+                <div>
+                    <input
+                        type="text"
+                        value={editedTitle}
+                        onChange={(e) => setEditedTitle(e.target.value)}
+                        placeholder="Edit title"
+                    />
+                    <textarea
+                        value={editedDescription}
+                        onChange={(e) => setEditedDescription(e.target.value)}
+                        placeholder="Edit description"
+                    />
+                    <button onClick={handleSaveEdit}>Save</button>
+                </div>
+            ) : (
+                <>
+                    <div className="task-text">
+                        <h4>{title}</h4>
+                        <p>{description}</p>
+                    </div>
+                    <button className="task-edit" onClick={handleEdit}>Edit</button> {/* Edit Button */}
+                    <input
+                        type="checkbox"
+                        className="task-checkbox"
+                        checked={isCompleted}
+                        onChange={onComplete}
+                    />
+                    {isCompleted && <p className="complete-text">Complete</p>}
+                    <button className="task-delete" onClick={onDelete}>X</button>
+                </>
+            )}
 
             {subtaskInputVisible && (
                 <div>
@@ -74,27 +97,30 @@ const Task: React.FC<TaskProps> = ({
                 </div>
             )}
 
-            {/* Button to add subtask */}
-            <button className="task-add-subtask" onClick={handleAddSubtaskInput}>+</button>
+            <button className="task-add-subtask" onClick={() => setSubtaskInputVisible(true)}>+</button>
 
-            {/* Subtask rendering */}
             {subtasks.length > 0 && (
-                <div className="subtasks">
+                <div className="subtasks mt-3">
                     <h5>Subtasks:</h5>
                     {subtasks.map(subtask => (
-                        <div key={subtask.id} className={`subtask ${subtask.isCompleted ? 'completed-subtask' : ''}`}>
-                            <span>{subtask.title}</span>
+                        <div
+                            key={subtask.id}
+                            className={`subtask d-flex align-items-center mb-2 ${subtask.isCompleted ? 'completed-subtask' : ''}`}
+                        >
+                            <span className={`subtask-title ${subtask.isCompleted ? 'text-decoration-line-through' : ''}`}>
+                                {subtask.title}
+                            </span>
                             <input
                                 type="checkbox"
-                                className="task-checkbox"
+                                className="ms-2"
                                 checked={subtask.isCompleted}
-                                onChange={() => {/* Handle subtask completion */ }}
+                                onChange={() => onToggleSubtask(subtask.id)}
                             />
+                            {subtask.isCompleted && <p className="done-text ms-2 mb-0">Done</p>}
                         </div>
                     ))}
                 </div>
             )}
-
         </div>
     );
 };
