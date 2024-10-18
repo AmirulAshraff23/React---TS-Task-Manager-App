@@ -1,168 +1,191 @@
-/* App.css */
-
-/* General Styles */
-.container {
+.mainContainer {
     display: flex;
     flex-direction: column;
     /*align-items: center;*/
-    padding: 60px; /* Increased padding */
+    justify-content: center;
+    padding: 40px; /* Adds padding around the container */
+    background-color: #e9ecef; /* Light background to differentiate from other sections */
+    min-height: 100vh; /* Full viewport height */
+}
+
+
+
+
+
+/* Pagination Styles */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 10px 20px;
+    margin: 0 5px;
+    font-size: 18px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.pagination button:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+/* Task Container Styles */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px;
     background-color: #f8f9fa;
-    border-radius: 15px; /* Larger border radius */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Slightly larger shadow */
-    margin: 40px auto; /* Increased margin */
-    max-width: 1200px; /* Wider container */
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    margin: 40px auto;
+    max-width: 1400px; /* Increased max-width for larger task area */
 }
 
 h1 {
-    font-size: 3rem; /* Increased font size */
+    font-size: 3rem;
     text-align: center;
     color: #343a40;
-    margin-bottom: 20px; /* More spacing below */
+    margin-bottom: 20px;
 }
 
 p {
-    font-size: 1.5rem; /* Larger text */
+    font-size: 1.5rem;
     color: #6c757d;
-    text-align: center;
-    margin-bottom: 30px; /* More spacing */
+    margin-bottom: 30px;
+    text-align: left; 
 }
 
-/* Task List Container */
+/* Task List and Buttons */
+.add-task-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Space between buttons */
+    margin-bottom: 20px;
+}
+
 .task-list-container {
-    max-width: 1400px; /* Wider task list container */
+    max-width: 100%; /* Full width for task list */
     margin: 0 auto;
-    padding: 30px; /* More padding */
+    padding: 30px;
     background-color: #f9f9f9;
     border-radius: 10px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Larger shadow */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Task Styles */
 .task {
-    display: block;       /* Parent task displayed block */
-    margin-bottom: 40px;  /* Space between tasks */
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    align-items: flex-start;
+    margin-bottom: 40px;
     padding: 20px;
-    background-color: #f5f5f5; /* Light background for parent */
-    border-radius: 8px;   /* Make parent task round */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow to make it stand out */
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Task takes up full width */
 }
 
-.subtasks {
-    display: flex;        /* Subtasks will have their own display */
-    flex-direction: column;
-    gap: 10px;            /* Space between each subtask */
-    margin-top: 20px;     /* Space between parent and subtasks */
+.task-checkbox {
+    margin-right: 15px;
 }
 
-.subtask {
-    padding: 15px;
-    background-color: #e0e0e0;  /* Subtask gets separate color */
-    border-radius: 6px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Smaller shadow for subtasks */
+.task h4 {
+    font-size: 26px; /* Bigger Task Title */
+    margin-bottom: 12px;
+    color: #333;
+    width: 100%; /* Take full width */
+}
+
+/* Button Group Styling */
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.button-group .btn {
+    padding: 8px 12px;
+    font-size: 14px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-group .btn:hover {
+    background-color: #0056b3;
+}
+
+.button-group .btn-danger {
+    background-color: red;
+}
+
+.button-group .btn-danger:hover {
+    background-color: darkred;
+}
+
+/* Centering the Yes and No buttons */
+.warning-button-group-center {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Add space between the buttons */
+    margin-top: 10px; /* Optional: some spacing above the buttons */
 }
 
 
-/* Task hover effect */
-.task:hover {
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15); /* Stronger hover effect */
+/* Input Fields */
+input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    width: 100%;
+    margin-bottom: 10px;
 }
 
-/* Completed Task Styles */
+/* Completed Task */
 .task.completed-task {
     border: 2px solid green;
     background-color: #eaffea;
 }
 
-/* Task Text */
-.task h4 {
-    font-size: 22px; /* Larger font size */
-    margin-bottom: 12px;
-    color: #333;
-}
-
-.task p {
-    font-size: 18px; /* Larger text size */
-    color: #666;
-}
-
-/* Complete Text */
 .complete-text {
-    color: green;
-    font-weight: bold;
-    margin-left: 10px;
-}
-
-/* Button Styles */
-.btn {
-    padding: 15px 25px; /* Larger button */
-    font-size: 18px; /* Larger text */
-}
-
-.btn-danger {
-    background-color: red;
+    background-color: green;
     color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
 }
 
-/* Checkbox Styles */
-.task-checkbox {
-    width: 20px;  /* Increased size */
-    height: 20px; /* Increased size */
-    transform: scale(1.5); /* Larger checkbox */
-    accent-color: green;
-    cursor: pointer;
-}
-
-.done-text {
-    color: green;
-    font-weight: bold;
-}
-
-/* Delete Button Styles */
-.task-delete {
-    width: 40px; /* Larger button */
-    height: 40px;
-    border-radius: 50%;
-    background-color: red;
-    color: white;
-    font-size: 20px; /* Larger font */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    border: none;
-}
-.task-add-subtask {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: blue;
-    color: white;
-    font-size: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    border: none;
+/* Subtask Styles */
+.subtask {
+    padding: 15px;
+    background-color: #e0e0e0;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Ensure subtasks take full width */
 }
 
 .subtasks {
-    padding-left: 20px; /* Indent subtasks */
-    margin-top: 10px;    /* Space between parent and subtask */
+    padding-left: 30px;
+    margin-top: 20px;
 }
 
-/* Alert Styles */
-.alert-warning {
-    background-color: #ffedc2;
-    padding: 25px; /* Larger padding */
-    border-radius: 10px;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
-}
-
-.alert-warning button {
-    margin-right: 10px;
-}
-
-/* Miscellaneous Styles */
-.task-text {
-    text-align: left;
+.subtask input[type="text"] {
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    width: 100%;
 }

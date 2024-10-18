@@ -8,9 +8,12 @@ const App: React.FC = () => {
     const [tasks, setTasks] = useState<TaskItem[]>([]); // Create state for tasks
 
     return (
-        <div className="container">
-            <h1>Task Management App</h1>
-            <p>Time to get work done</p>
+        <div className="mainContainer">
+            <div className="container">            
+                <h1>Task Management App</h1>
+                <p>Time to get work done</p>
+                </div>
+
             <TaskList tasks={tasks} setTasks={setTasks} /> {/* Pass setTasks prop */}
         </div>
     );

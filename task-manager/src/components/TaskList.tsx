@@ -88,8 +88,8 @@ const TaskList: React.FC<{ tasks: TaskItem[]; setTasks: React.Dispatch<React.Set
             )
         );
     };
-    
-    
+
+
 
     const deleteTask = (id: number) => {
         setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
@@ -105,17 +105,17 @@ const TaskList: React.FC<{ tasks: TaskItem[]; setTasks: React.Dispatch<React.Set
             prevTasks.map((task) =>
                 task.id === taskId
                     ? {
-                          ...task,
-                          subtasks: task.subtasks.map((subtask) =>
-                              subtask.id === subtaskId ? { ...subtask, isCompleted: !subtask.isCompleted } : subtask
-                          ),
-                      }
+                        ...task,
+                        subtasks: task.subtasks.map((subtask) =>
+                            subtask.id === subtaskId ? { ...subtask, isCompleted: !subtask.isCompleted } : subtask
+                        ),
+                    }
                     : task
             )
         );
     };
 
-    
+
 
     return (
         <div>
@@ -133,22 +133,28 @@ const TaskList: React.FC<{ tasks: TaskItem[]; setTasks: React.Dispatch<React.Set
                 placeholder="Enter task description"
                 className="form-control mb-3"
             />
-            <button className="btn btn-primary mb-3" onClick={handleAddTask}>
-                Add Task
-            </button>
-            <button className="btn btn-danger mb-3" onClick={() => setShowWarning(true)}>
-                Clear All Tasks
-            </button>
+
+
+            <div className="add-task-container">
+                <button className="btn btn-primary" onClick={handleAddTask}>
+                    Add Task
+                </button>
+                <button className="btn btn-danger" onClick={() => setShowWarning(true)}>
+                    Clear Tasks
+                </button>
+            </div>
 
             {showWarning && (
                 <div className="alert alert-warning">
                     <p>This will delete all tasks! Are you sure?</p>
-                    <button className="btn btn-danger" onClick={clearAllTasks}>
-                        Yes
-                    </button>
-                    <button className="btn btn-secondary" onClick={() => setShowWarning(false)}>
-                        No
-                    </button>
+                    <div className="warning-button-group-center">
+                        <button className="btn btn-danger" onClick={clearAllTasks}>
+                            Yes
+                        </button>
+                        <button className="btn btn-secondary" onClick={() => setShowWarning(false)}>
+                            No
+                        </button>
+                    </div>
                 </div>
             )}
 
@@ -166,16 +172,16 @@ const TaskList: React.FC<{ tasks: TaskItem[]; setTasks: React.Dispatch<React.Set
                         onAddSubtask={(subtaskTitle) => handleAddSubtask(task.id, subtaskTitle)}
                         onToggleSubtask={(subtaskId) => handleToggleSubtask(task.id, subtaskId)}
                         onEditTask={(newTitle, newDescription) => handleEditTask(task.id, newTitle, newDescription)}
-                        onParentTaskComplete={(isCompleted) => handleParentTaskComplete(task.id, isCompleted)} 
+                        onParentTaskComplete={(isCompleted) => handleParentTaskComplete(task.id, isCompleted)}
                     />
                 ))}
                 <div className="pagination">
                     <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-                        Previous
+                        &lt;
                     </button>
                     <span>Page {currentPage} of {totalPages}</span>
                     <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-                        Next
+                        &gt;
                     </button>
                 </div>
             </div>
