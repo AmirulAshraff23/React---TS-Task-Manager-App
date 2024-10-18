@@ -39,6 +39,7 @@ const TaskList: React.FC<{ tasks: TaskItem[]; setTasks: React.Dispatch<React.Set
     const [newTaskTitle, setNewTaskTitle] = useState('');
     const [newTaskDescription, setNewTaskDescription] = useState('');
     const [showWarning, setShowWarning] = useState(false);
+    const [updatedTasks, setUpdatedTasks] = useState(tasks);
 
     const handleAddTask = () => {
         const newTask: TaskItem = {
@@ -80,6 +81,16 @@ const TaskList: React.FC<{ tasks: TaskItem[]; setTasks: React.Dispatch<React.Set
         );
     };
 
+    const handleParentTaskComplete = (taskId: number, isCompleted: boolean) => {
+        setTasks((prevTasks) =>
+            prevTasks.map((task) =>
+                task.id === taskId ? { ...task, isCompleted } : task
+            )
+        );
+    };
+    
+    
+
     const deleteTask = (id: number) => {
         setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
     };
@@ -103,6 +114,8 @@ const TaskList: React.FC<{ tasks: TaskItem[]; setTasks: React.Dispatch<React.Set
             )
         );
     };
+
+    
 
     return (
         <div>
@@ -153,6 +166,7 @@ const TaskList: React.FC<{ tasks: TaskItem[]; setTasks: React.Dispatch<React.Set
                         onAddSubtask={(subtaskTitle) => handleAddSubtask(task.id, subtaskTitle)}
                         onToggleSubtask={(subtaskId) => handleToggleSubtask(task.id, subtaskId)}
                         onEditTask={(newTitle, newDescription) => handleEditTask(task.id, newTitle, newDescription)}
+                        onParentTaskComplete={(isCompleted) => handleParentTaskComplete(task.id, isCompleted)} 
                     />
                 ))}
                 <div className="pagination">

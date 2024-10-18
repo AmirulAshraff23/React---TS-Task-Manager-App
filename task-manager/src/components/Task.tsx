@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Subtask } from './TaskList';
 
@@ -13,6 +13,7 @@ interface TaskProps {
     onAddSubtask: (subtaskTitle: string) => void;
     onToggleSubtask: (subtaskId: number) => void;
     onEditTask: (newTitle: string, newDescription: string) => void; // Add this for editing
+    onParentTaskComplete: (isCompleted: boolean) => void; // New prop to handle parent completion
 }
 
 const Task: React.FC<TaskProps> = ({
@@ -26,12 +27,13 @@ const Task: React.FC<TaskProps> = ({
     onAddSubtask,
     onToggleSubtask,
     onEditTask,
+    onParentTaskComplete, // Use new prop
 }) => {
     const [subtaskInputVisible, setSubtaskInputVisible] = useState(false);
     const [newSubtaskTitle, setNewSubtaskTitle] = useState('');
-    const [isEditing, setIsEditing] = useState(false); // Track if we are editing
-    const [editedTitle, setEditedTitle] = useState(title); // Hold edited title
-    const [editedDescription, setEditedDescription] = useState(description); // Hold edited description
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedTitle, setEditedTitle] = useState(title);
+    const [editedDescription, setEditedDescription] = useState(description);
 
     const handleAddSubtask = () => {
         if (newSubtaskTitle.trim()) {
@@ -42,13 +44,22 @@ const Task: React.FC<TaskProps> = ({
     };
 
     const handleEdit = () => {
-        setIsEditing(true); // Start editing mode
+        setIsEditing(true);
     };
 
     const handleSaveEdit = () => {
-        onEditTask(editedTitle, editedDescription); // Save edited task
-        setIsEditing(false); // Exit editing mode
+        onEditTask(editedTitle, editedDescription);
+        setIsEditing(false);
     };
+
+    const handleSubtaskToggle = (subtaskId: number) => {
+        onToggleSubtask(subtaskId);
+        
+        // Check if all subtasks are completed
+        const allSubtasksCompleted = subtasks.every((subtask) => subtask.isCompleted);
+        onParentTaskComplete(allSubtasksCompleted); // Update parent task completion
+    };
+    
 
     return (
         <div className={`task ${isCompleted ? 'completed-task' : ''}`}>
@@ -73,7 +84,7 @@ const Task: React.FC<TaskProps> = ({
                         <h4>{title}</h4>
                         <p>{description}</p>
                     </div>
-                    <button className="task-edit" onClick={handleEdit}>Edit</button> {/* Edit Button */}
+                    <button className="task-edit" onClick={handleEdit}>Edit</button>
                     <input
                         type="checkbox"
                         className="task-checkbox"
@@ -114,7 +125,7 @@ const Task: React.FC<TaskProps> = ({
                                 type="checkbox"
                                 className="ms-2"
                                 checked={subtask.isCompleted}
-                                onChange={() => onToggleSubtask(subtask.id)}
+                                onChange={() => handleSubtaskToggle(subtask.id)}
                             />
                             {subtask.isCompleted && <p className="done-text ms-2 mb-0">Done</p>}
                         </div>
