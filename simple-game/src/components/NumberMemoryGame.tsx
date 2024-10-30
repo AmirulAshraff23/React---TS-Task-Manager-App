@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 const NumberMemoryGame: React.FC = () => {
   const [number, setNumber] = useState<number | null>(null);
-  const [userInput, setUser Input] = useState<string>('');
+  const [userInput, setUserInput] = useState<string>('');
   const [message, setMessage] = useState<string>('');
   const [showNumber, setShowNumber] = useState<boolean>(false);
 
@@ -24,7 +24,7 @@ const NumberMemoryGame: React.FC = () => {
     } else {
       setMessage(`Wrong! The number was ${number}.`);
     }
-    setUser Input('');
+    setUserInput('');
   };
 
   return (
@@ -35,7 +35,7 @@ const NumberMemoryGame: React.FC = () => {
       <input
         type="number"
         value={userInput}
-        onChange={(e) => setUser Input(e.target.value)}
+        onChange={(e) => setUserInput(e.target.value)}
         placeholder="Enter the number"
         style={{ marginTop: '10px' }}
       />
@@ -46,6 +46,3 @@ const NumberMemoryGame: React.FC = () => {
 };
 
 export default NumberMemoryGame;
-
-// Add this empty export statement
-export {};
